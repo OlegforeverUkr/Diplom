@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %} Create Movie {% endblock %}
+
+{% block content %}
+    <div style="max-width: 400px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px;">
+        <h1 style="text-align: center;">Create Movie</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div style="margin-bottom: 10px;">
+                <label for="{{ form.name_movie.id_for_label }}">Movie's Name:</label>
+                {{ form.name_movie }}
+            </div>
+            <div style="margin-bottom: 10px;">
+                <label for="{{ form.duration_minutes.id_for_label }}">Duration Movie</label>
+                {{ form.duration_minutes }}
+            </div>
+            <div style="margin-bottom: 10px;">
+                <label for="{{ form.image_url.id_for_label }}">Image Movie</label>
+                {{ form.image_url }}
+            </div>
+            <div style="text-align: center;">
+                <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">Create Movie</button>
+            </div>
+        </form>
+        <div style="text-align: center; margin-top: 10px;">
+            <a href="{% url 'administrators:adminka' %}" style="color: #007bff; text-decoration: none;">Back to Cabinet</a>
+        </div>
+    </div>
+{% endblock %}

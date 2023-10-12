@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %} Create Session {% endblock %}
+
+{% block content %}
+    <div style="max-width: 400px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px;">
+        <h1 style="text-align: center;">Create Session</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div style="text-align: center;">
+                <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">Create Session</button>
+            </div>
+        </form>
+        <div style="text-align: center; margin-top: 10px;">
+            <a href="{% url 'administrators:adminka' %}" style="color: #007bff; text-decoration: none;">Back to Cabinet</a>
+        </div>
+    </div>
+{% endblock %}

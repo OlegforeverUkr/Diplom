@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}{{ movie.name_movie }} Sessions{% endblock %}
+{% block content %}
+    <div class="movie-sessions">
+        <h1>{{ movie.name_movie }} Sessions</h1>
+        <ul class="session-list">
+            {% for session in sessions %}
+                <li class="session-item">
+                    <div class="session-details">
+                        <h3>{{ session.name_session }}</h3>
+                        <p>Start Time: {{ session.time_start }}</p>
+                        <p>End Time: {{ session.time_end }}</p>
+                        <p>Date Start: {{ session.date_showing_start }}</p>
+                        <p>Date End: {{ session.date_showing_end }}</p>
+                    </div>
+                    <div class="session-actions">
+                        <p>Ticket Price: ${{ session.ticket_price }}</p>
+                        <a href="{% url 'administrators:buy_tiket' session.id %}" class="btn btn-primary">Buy Ticket</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <style>
+        .movie-sessions {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .session-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .session-item {
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .session-details {
+            flex-grow: 1;
+        }
+
+        .session-actions {
+            text-align: right;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            font-size: 14px;
+            text-align: center;
+            text-decoration: none;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 4px;
+        }
+    </style>
+{% endblock %}

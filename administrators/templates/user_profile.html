@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}User Profile{% endblock %}
+{% block content %}
+    <div class="container mt-4">
+        <h2>{{ user.username }}'s Profile</h2>
+        <h3>Purchase History</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Session Name</th>
+                    <th>Date</th>
+                    <th>Time Start</th>
+                    <th>Movie</th>
+                    <th>Ticket Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for purchase in user_purchases %}
+                    <tr>
+                        <td>{{ purchase.ticket_session.name_session }}</td>
+                        <td>{{ purchase.ticket_date }}</td>
+                        <td>{{ purchase.ticket_session.time_start }}</td>
+                        <td>{{ purchase.ticket_session.session_movie }}</td>
+                        <td>${{ purchase.ticket_session.ticket_price }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h4>Total: {{ total_spent }} грн.</h4>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #f5f5f5;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
+
+    form {
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 10px 15px;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none;
+        background-color: #007bff;
+        color: #fff;
+        border: 1px solid #007bff;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    .btn:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+    .list-group {
+        margin-top: 20px;
+    }
+
+    .list-group-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        border: 1px solid #ddd;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .list-group-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .list-group-item strong {
+        font-size: 22px;
+        color: #333;
+    }
+
+    .list-group-item span {
+        font-size: 16px;
+        color: #777;
+    }
+
+    a {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s;
+    }
+
+    a:hover {
+        color: #0056b3;
+    }
+</style>
+
+<div class="container">
+    <h2>Sessions by Date</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Show Sessions</button>
+    </form>
+
+    {% if sessions %}
+        <h3>Filtered Sessions:</h3>
+        <ul class="list-group">
+            {% for session in sessions %}
+                <li class="list-group-item">
+                    <div>
+                        <strong>{{ session.name_session }}</strong>
+                        <span>{{ session.session_movie }}</span>
+                    </div>
+                    <div>
+                        <span>{{ session.date_showing_start }} - {{ session.date_showing_end }}</span>
+                        <span>{{ session.time_start }}</span>
+                    </div>
+                    <div>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'administrators:buy_tiket' session.id %}">Buy Ticket</a>
+                        {% else %}
+                            <a href="{% url 'administrators:login' %}">Log in</a>
+                        {% endif %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+{% endblock %}

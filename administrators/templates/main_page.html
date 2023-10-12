@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% block title %}Cinema Main{% endblock %}
+{% block content %}
+<body>
+    <p>
+        <a href="?sort_by=time_start">Sort by Time</a> |
+        <a href="?sort_by=ticket_price">Sort by Price</a>
+    </p>
+    <div class="container mt-4">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" id="today-tab" data-bs-toggle="tab" href="#today">Today</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tomorrow-tab" data-bs-toggle="tab" href="#tomorrow">Tomorrow</a>
+            </li>
+        </ul>
+
+        <div class="tab-content mt-2">
+            <div class="tab-pane fade show active" id="today">
+                <h1>Today's Sessions</h1>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Session Name</th>
+                            <th>Time Start</th>
+                            <th>Hall</th>
+                            <th>Tickets Left</th>
+                            <th>Movie</th>
+                            <th>Price</th>
+                            <th>Buy Ticket</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for session in today_sessions %}
+                            <tr>
+                                <td>{{ session.name_session }}</td>
+                                <td>{{ session.time_start }}</td>
+                                <td>{{ session.hall }}</td>
+                                <td>{{ session.available_tickets }}</td>
+                                <td>{{ session.session_movie }}</td>
+                                <td>{{ session.ticket_price }}</td>
+                                <td>
+                                    {% if user.is_authenticated %}
+                                        {% if session.available_tickets > 0 %}
+                                            <a href="{% url 'administrators:buy_tiket' session.id %}">Buy Ticket</a>
+                                        {% else %}
+                                            <a href="#soldOutModalToday" role="button" class="btn" data-bs-toggle="modal" onclick="showSoldOutMessage('Today')">Билеты распроданы</a>
+
+                                        {% endif %}
+                                    {% else %}
+                                        <a href="{% url 'administrators:login' %}">Log in</a>
+                                    {% endif %}
+                                </td>
+
+                                <div id="soldOutModalToday" class="modal fade">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h2>Уважаемый клиент</h2>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>К сожалению все билеты на выбранное время уже распроданы.
+                                                    Вы можете приобрести билет на другое время или
+                                                    выбрать другую дату. Приносим Вам свои извинения.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tab-pane fade" id="tomorrow">
+                <h1>Tomorrow's Sessions</h1>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Session Name</th>
+                            <th>Time Start</th>
+                            <th>Hall</th>
+                            <th>Tickets Left</th>
+                            <th>Movie</th>
+                            <th>Price</th>
+                            <th>Buy Ticket</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for session in tomorrow_sessions %}
+                            <tr>
+                                <td>{{ session.name_session }}</td>
+                                <td>{{ session.time_start }}</td>
+                                <td>{{ session.hall }}</td>
+                                <td>{{ session.available_tickets }}</td>
+                                <td>{{ session.session_movie }}</td>
+                                <td>{{ session.ticket_price }}</td>
+                                <td>
+                                    {% if user.is_authenticated %}
+                                        {% if session.available_tickets > 0 %}
+                                            <a href="{% url 'administrators:buy_tiket' session.id %}">Buy Ticket</a>
+                                        {% else %}
+                                            <a href="#soldOutModalTomorrow" role="button" class="btn" data-bs-toggle="modal" onclick="showSoldOutMessage('Tomorrow')">Билеты распроданы</a>
+                                        {% endif %}
+                                    {% else %}
+                                        <a href="{% url 'administrators:login' %}">Log in</a>
+                                    {% endif %}
+                                </td>
+
+                                <div id="soldOutModalTomorrow" class="modal fade">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h2>Уважаемый клиент</h2>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>К сожалению все билеты на выбранное время уже распроданы.
+                                                    Вы можете приобрести билет на другое время или
+                                                    выбрать другую дату. Приносим Вам свои извинения.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                                         
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <h2>Фильмы в показе:</h2>
+    <div class="movie-list">
+        {% for movie in movies %}
+            <div class="movie">
+                <p>{{ movie.name_movie }}</p>
+                <a href="{% url 'administrators:movie_sessions' movie.id  %}">
+                    <img src="{{ movie.image_url }}" alt="{{ movie.name_movie }}">
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha384-hk8S9SMN5OFw1Hqku8zZnYy85zTszlqyjzx9id0LMI5vLzjlID6FvqJqVlLW6/t7"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-zjoRG85sEnY3t9OaqI7HVszXjW7gFS5LdFDT9WOaFkIo1Q9B2eJ1cz1e70N/A6Hp"
+        crossorigin="anonymous"></script>
+
+    <script>
+        function showSoldOutMessage(tab) {
+            $('#soldOutModal' + tab).modal('show');
+        }
+    </script>
+    
+    <style>
+        .movie-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .movie {
+            width: 23%;
+            margin-bottom: 20px;
+        }
+
+        .movie img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+    </style>
+</body>
+
+{% endblock %}

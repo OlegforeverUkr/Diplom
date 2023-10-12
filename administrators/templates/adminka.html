@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Cabinet{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h1 class="mb-4">Admin Cabinet</h1>
+    <div class="card">
+      <div class="card-body">
+        <p class="lead">Welcome to the Admin Cabinet. What would you like to do today?</p>
+        
+        <div class="row">
+          <div class="col-md-4 mb-4">
+            <div class="text-center">
+              <i class="fas fa-door-open fa-4x mb-2 text-primary"></i>
+              <h4 class="mb-2">Control Halls</h4>
+              <a href="{% url 'administrators:halls' %}" class="btn btn-primary btn-lg">Manage</a>
+            </div>
+          </div>
+
+          <div class="col-md-4 mb-4">
+            <div class="text-center">
+              <i class="fas fa-film fa-4x mb-2 text-primary"></i>
+              <h4 class="mb-2">Control Movies</h4>
+              <a href="{% url 'administrators:movies' %}" class="btn btn-primary btn-lg">Manage</a>
+            </div>
+          </div>
+
+          <div class="col-md-4 mb-4">
+            <div class="text-center">
+              <i class="far fa-play-circle fa-4x mb-2 text-primary"></i>
+              <h4 class="mb-2">Control Sessions</h4>
+              <a href="{% url 'administrators:sessions' %}" class="btn btn-primary btn-lg">Manage</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+{% endblock %}

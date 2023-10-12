@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %} Manage Movies {% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h2>Manage Movies</h2>
+        <div class="mb-3">
+            <a href="{% url 'administrators:create_movie' %}" class="btn btn-primary">Add New Movie</a>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Minutes</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for movie in movies %}
+                    <tr>
+                        <td>{{ movie.name_movie }}</td>
+                        <td>{{ movie.duration_minutes }} min</td>
+                        <td class="d-flex">
+                            <form method="post" class="me-2">
+                                {% csrf_token %}
+                                <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                                <button type="submit" class="btn btn-primary" name="action" value="edit">Edit</button>
+                            </form>
+                            <a href="{% url 'administrators:delete_movie' movie.id %}" class="btn btn-danger">Delete</a>
+                        </td>    
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

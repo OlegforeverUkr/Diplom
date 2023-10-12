@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %} Manage Halls {% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h2>Manage Halls</h2>
+        <div class="mb-3">
+            <a href="{% url 'administrators:create_hall' %}" class="btn btn-primary">Add New Hall</a>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Size</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for hall in halls %}
+                    <tr>
+                        <td>{{ hall.name_hall }}</td>
+                        <td>{{ hall.size }}</td>
+                        <td class="d-flex">
+                            <form method="post" class="me-2">
+                                {% csrf_token %}
+                                <input type="hidden" name="hall_id" value="{{ hall.id }}">
+                                <button type="submit" class="btn btn-primary" name="action" value="edit">Edit</button>
+                            </form>
+                            <a href="{% url 'administrators:delete_hall' hall.id %}" class="btn btn-danger">Delete</a>
+                        </td>    
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

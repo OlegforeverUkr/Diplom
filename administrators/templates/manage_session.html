@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %} Manage Sessions {% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h2>Manage Sessions</h2>
+        <h4><a href="{% url 'administrators:create_session' %}" class="btn btn-primary">Add New Session</a></h4>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Session Hall</th>
+                    <th>Ticket Price</th>
+                    <th>Time</th>
+                    <th>Movie</th>
+                    <th>Date Start</th>
+                    <th>Date End</th>
+                    <th>Tickets Sold</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for session in sessions_with_counts %}
+                    <tr>
+                        <td>{{ session.name_session }}</td>
+                        <td>{{ session.hall }}</td>
+                        <td>${{ session.ticket_price }}</td>
+                        <td>{{ session.time_start }}</td>
+                        <td>{{ session.session_movie }}</td>
+                        <td>{{ session.date_showing_start }}</td>
+                        <td>{{ session.date_showing_end }}</td>
+                        <td>{{ session.ticket_count }}</td>
+                        <td class="d-flex">
+                            <form method="post" class="me-5">
+                                {% csrf_token %}
+                                <input type="hidden" name="session_id" value="{{ session.id }}">
+                                <button type="submit" class="btn btn-primary">
+                                    <a href="{% url 'administrators:edit_session' pk=session.id %}" style="color: white; text-decoration: none;">Edit</a>
+                                </button>
+                            </form>
+                            <form method="post">
+                                {% csrf_token %}
+                                <button class="btn btn-danger">
+                                    <a href="{% url 'administrators:delete_session' pk=session.id %}" style="color: white; text-decoration: none;">Delete</a>
+                                </button>
+                            </form>
+                        </td>   
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

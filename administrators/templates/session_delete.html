@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %} Delete Session {% endblock %}
+
+{% block content %}
+    <h2>Confirm Deletion</h2>
+    <p>Are you sure you want to delete the session "{{ session.name_session }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Delete</button>
+    </form>
+    <a href="{% url 'administrators:adminka' %}">Cancel</a>
+{% endblock %}
